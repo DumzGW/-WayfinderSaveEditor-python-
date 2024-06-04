@@ -1,0 +1,9 @@
+{
+    "original_path": "output/original.json",
+
+    "output_path_1": "output/修改这个.bin",
+
+    "output_path_2": "output/output2.json",
+
+    "save_path":"output/WayfinderSave_x.sav"
+}
