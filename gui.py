@@ -66,7 +66,7 @@ def run_command(command):
         print("Error message:", e.stderr.decode())
 
 app = tk.Tk()
-app.title("Process Automation Tool")
+app.title("Wayfinder Save Editor")
 fixed_width = 400
 fixed_height = 300
 app.minsize(fixed_width, fixed_height)
@@ -82,7 +82,7 @@ compress_button.pack(pady=10)
 json_to_save_button = tk.Button(app, text="Convert JSON to Save输出修改后存档", command=json_to_save)
 json_to_save_button.pack(pady=10)
 
-status_label = tk.Label(app, text="Wayfinder Save Editor,请从上到下依次点击，\n输出文件在output文件夹中")
+status_label = tk.Label(app, text="本软件为免费开源软件\n请从上到下依次点击，\n输出文件在output文件夹中")
 status_label.pack(pady=20)
 
 app.mainloop()
