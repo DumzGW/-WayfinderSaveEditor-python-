@@ -1,4 +1,4 @@
-# -WayfinderSaveEdtor-python-
+# -WayfinderSaveEditor-python-
 可以对Wayfinder的存档进行修改，在修改前请自行备份，防止由于部分数据缺少或超出限制导致的坏档  
 This software allows you to modify the save files of Wayfinder. Before making any modifications, please ensure you have backed up your save files to prevent corruption due to missing data or exceeding limits.  
 
