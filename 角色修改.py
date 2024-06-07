@@ -55,7 +55,7 @@ def find_ability(non_fungible_items, target_name):#角色能力
 
 class Ui_Form(object):
     path = path0(load_config()['output_path_1'])
-    translation_path = path0(load_config()["trans_path"])
+    translation_path = resource_path(load_config()["trans_path"])
 
     def setupUi(self, Form, i):
         Form.setObjectName("Form")
@@ -111,12 +111,10 @@ class Ui_Form(object):
         self.save = QtWidgets.QPushButton(Form)
         self.save.setGeometry(QtCore.QRect(490, 20, 75, 23))
         self.save.setObjectName("save")
-
         self.retranslateUi(Form)
         self.load_data(i)
         self.save.clicked.connect(lambda: self.save_data(i))
         QtCore.QMetaObject.connectSlotsByName(Form)
-
     def retranslateUi(self, Form):
         _translate = QtCore.QCoreApplication.translate
         Form.setWindowTitle(_translate("Form", "角色修改"))
@@ -148,8 +146,7 @@ class Ui_Form(object):
             aspect_name = f'aspect{j}'
             qinhe_edit = getattr(self, f'qinhe{j}')
             qinhe_edit.setText(str(find_ability(self.non_fungible_items, trans_text(self.translation_data, char_name, aspect_name))))
-
-        self.img.setPixmap(QtGui.QPixmap(os.path.join(path0('角色图片'), trans_text(self.translation_data, char_name, 'img'))))
+        self.img.setPixmap(QtGui.QPixmap(os.path.join(resource_path('角色图片'), trans_text(self.translation_data, char_name, 'img'))))
 
     def save_data(self, i):
         char_name = get_CharName(self.bin_data, i)
@@ -176,9 +173,8 @@ class Ui_Form(object):
             QtWidgets.QMessageBox.information(None, '提示', '保存成功！')
 
 def modify_char(i):
-    app = QtWidgets.QApplication(sys.argv)
     Form = QtWidgets.QWidget()
     ui = Ui_Form()
     ui.setupUi(Form, i)  # Provide the appropriate index here
     Form.show()
-    sys.exit(app.exec_())
+    return Form

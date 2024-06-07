@@ -5,5 +5,7 @@
 
     "output_path_2": "output/output2.json",
 
-    "save_path":"output/WayfinderSave_x.sav"
+    "save_path":"output/WayfinderSave_x.sav",
+
+    "trans_path":"trans.json"
 }

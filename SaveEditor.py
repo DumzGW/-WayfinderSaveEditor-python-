@@ -1,15 +1,25 @@
 import tkinter as tk
 from tkinter import filedialog, messagebox,ttk
+import sys
 import json
 import subprocess
 import zlib
 import os
-
+import webbrowser
+from 主界面 import GetMain
+def resource_path(relative_path):
+    try:
+        # PyInstaller creates a temp folder and stores path in _MEIPASS
+        base_path = sys._MEIPASS
+    except AttributeError:
+        base_path = os.path.abspath(".")
+    return os.path.join(base_path, relative_path)
+def path0(path):
+    return os.path.join(os.path.dirname(sys.argv[0]),path)
 # 加载配置
 def load_config():
-    with open('config.json', 'r',encoding='utf-8') as config_file:
+    with open(resource_path('config.json'), 'r',encoding='utf-8') as config_file:
         return json.load(config_file)
-
 def get_default_save_path():
     user_name = os.getlogin()
     default_path = f'C:/Users/{user_name}/AppData/Local/Wayfinder/Saved/SaveGames'
@@ -37,24 +47,6 @@ def show_bin_editor(bin_file_path):
             messagebox.showerror("错误", f"无法解析 JSON: {e}")
             return
 
-    def build_tree(parent, dictionary):
-        for key, value in dictionary.items():
-            if isinstance(value, dict):
-                node = tree.insert(parent, 'end', text=key, open=True)
-                build_tree(node, value)
-            elif isinstance(value, list):
-                node = tree.insert(parent, 'end', text=f"{key}[]", open=False)
-                for i, item in enumerate(value):
-                    item_node = tree.insert(node, 'end', text=f"[{i}]", open=False)
-                    if isinstance(item, dict):
-                        build_tree(item_node, item)
-                    else:
-                        tree.insert(item_node, 'end', text=item)
-            else:
-                tree.insert(parent, 'end', text=f"{key}: {value}")
-
-    build_tree('', json_data)
-
     def on_tree_select(event):
         selected_item = tree.selection()
         if selected_item:
@@ -66,9 +58,12 @@ def show_bin_editor(bin_file_path):
         selected_item = tree.selection()
         if selected_item:
             new_value = entry.get()
+            if ':' in new_value:
+                _,new_value1=new_value.split(':',1)
+            
             tree.item(selected_item, text=new_value)
         # Update JSON data with new value
-            update_json_data(json_data, tree.item(selected_item, 'tags')[0].split('/'), new_value)
+            update_json_data(json_data, tree.item(selected_item, 'tags')[0].split('/'), new_value1)
             # Save updated JSON data to file
             with open(bin_file_path, 'w', encoding='utf-8') as bin_file:
                 json.dump(json_data, bin_file, ensure_ascii=False, indent=2)
@@ -170,7 +165,6 @@ def show_bin_editor1(bin_file_path):
 
     save_button = tk.Button(frame, text="保存", command=save_bin_file)
     save_button.pack(side=tk.LEFT, padx=5)
-
 # 保存路径
 def save_to_json():
     ensure_output_folder_exists()
@@ -191,57 +185,50 @@ def save_to_json():
                 return
     if save_path:
         config = load_config()
-        command = ['uesave.exe', 'to-json', '-i', save_path, '-o', config['original_path']]
+        command = [resource_path('uesave.exe'), 'to-json', '-i', save_path, '-o', path0(config['original_path'])]
         run_command(command)
         status_label.config(text=f"Converted {save_path} to {config['original_path']}")
-
 def uncompress_json():
     config = load_config()
     try:
-        with open(config['original_path'], 'r', encoding='utf-8') as file:
+        with open(path0(config['original_path']), 'r', encoding='utf-8') as file:
             original_json_data = json.load(file)
         compressed_data = original_json_data['root']['properties']['Buffer_CompressedJSONSaveGameContainer']['Array']['value']['Base']['Byte']['Byte']
         byte_data = bytes(compressed_data)
         decompressed_data = zlib.decompress(byte_data)
-        with open(config['output_path_1'], 'wb') as b_file:
+        with open(path0(config['output_path_1']), 'wb') as b_file:
             b_file.write(decompressed_data)
         status_label.config(text=f"Uncompressed {config['original_path']} to {config['output_path_1']}")
     except Exception as e:
         status_label.config(text=f"Error: {e}")
 def modify1():
     config = load_config()
-    show_bin_editor(config['output_path_1'])
+    show_bin_editor(path0(config['output_path_1']))
 def modify2():
     config = load_config()
-    show_bin_editor1(config['output_path_1'])
-
-
-
-
+    show_bin_editor1(path0(config['output_path_1']))
 def compress_file1():
     config = load_config()
     try:
-        with open(config['output_path_1'], 'rb') as file:
+        with open(path0(config['output_path_1']), 'rb') as file:
             decompressed_data = file.read()
         compressed_data = zlib.compress(decompressed_data)
         compressed_data_array = list(compressed_data)
-        with open(config['original_path'], 'r', encoding='utf-8') as file:
+        with open(path0(config['original_path']), 'r', encoding='utf-8') as file:
             original_json_data = json.load(file)
         original_json_data['root']['properties']['Buffer_CompressedJSONSaveGameContainer']['Array']['value']['Base']['Byte']['Byte'] = compressed_data_array
         original_json_data['root']['properties']['UncompressedSize']['Int']['value'] = len(decompressed_data)
         original_json_data['root']['properties']['CompressedSize']['Int']['value'] = len(compressed_data_array)
-        with open(config['output_path_2'], 'w', encoding='utf-8') as file:
+        with open(path0(config['output_path_2']), 'w', encoding='utf-8') as file:
             json.dump(original_json_data, file, ensure_ascii=False, indent=2)
         status_label.config(text=f"Compressed {config['output_path_1']} to {config['output_path_2']}")
     except Exception as e:
         status_label.config(text=f"Error: {e}")
-
 def json_to_save():
     config = load_config()
-    command = ['./uesave.exe', 'from-json', '-i', config['output_path_2'], '-o', config['save_path']]
+    command = [resource_path('uesave.exe'), 'from-json', '-i', path0(config['output_path_2']), '-o', path0(config['save_path'])]
     run_command(command)
     status_label.config(text=f"Converted {config['output_path_2']} to save file")
-
 def run_command(command):
     try:
         result = subprocess.run(command, check=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
@@ -250,33 +237,52 @@ def run_command(command):
     except subprocess.CalledProcessError as e:
         print("Error occurred while executing command")
         print("Error message:", e.stderr.decode())
-
+def donate1():
+    webbrowser.open("https://afdian.net/a/WCHDumz")
+    return
+def donate2():
+    webbrowser.open("https://www.patreon.com/user/shop/zan-zhu-donation-227577?u=130991073&utm_medium=clipboard_copy&utm_source=copyLink&utm_campaign=productshare_fan&utm_content=join_link")
+    return
+def donate3():
+    webbrowser.open("https://github.com/DumzGW/-WayfinderSaveEditor-python-")
+    return
+from time import sleep
+def uncompress():
+    save_to_json()
+    sleep(0.1)
+    uncompress_json()
+def compress():
+    compress_file1()
+    sleep(0.1)
+    json_to_save()
+print(sys.argv[0])
 app = tk.Tk()
 app.title("Wayfinder Save Editor")
 fixed_width = 800
 fixed_height = 400
 app.minsize(fixed_width, fixed_height)
-save_to_json_button = tk.Button(app, text="Convert Save to JSON输入存档路径", command=save_to_json)
-save_to_json_button.pack(pady=10)
+save_to_json_button = tk.Button(app, text="Uncompress\n选择存档文件并解压", command=uncompress)
+save_to_json_button.pack(pady=5)
+modifyMain_button = tk.Button(app, text="高级修改", command=GetMain)
+modifyMain_button.pack(pady=5)
 
-uncompress_button = tk.Button(app, text="Uncompress JSON解压存档文件", command=uncompress_json)
-uncompress_button.pack(pady=10)
-
-modify_button1 = tk.Button(app, text="Modify修改存档文件", command=modify1)
-modify_button2 = tk.Button(app, text="(可选Optional)directly Modify直接修改", command=modify2)
+modify_button1 = tk.Button(app, text="(可选)Modify1阅读存档文件1", command=modify2)
+modify_button2 = tk.Button(app, text="(可选)Modify2阅读存档文件2", command=modify2)
 buttom_frame = tk.Frame(app)
 buttom_frame.pack()
 modify_button1.pack(padx=5)
-modify_button2.pack( padx=5)
+modify_button2.pack(padx=5)
 buttom_frame.pack(pady=10)
 
-compress_button = tk.Button(app, text="Compress File1压缩存档文件", command=compress_file1)
+compress_button = tk.Button(app, text="Compress\n压缩并输出存档文件在output文件夹中", command=compress)
 compress_button.pack(pady=10)
 
-json_to_save_button = tk.Button(app, text="Convert JSON to Save输出修改后存档", command=json_to_save)
-json_to_save_button.pack(pady=10)
-
-status_label = tk.Label(app, text="请从上到下依次点击，\n输出文件在output文件夹中")
-status_label.pack(pady=20)
-
+status_label = tk.Label(app, text="解压->修改->压缩，\n输出文件在output文件夹中",fg="red")
+status_label.pack(pady=10)
+dL1 = tk.Button(app, text="赞助",fg="blue",cursor="hand2", command=donate1)
+dL1.pack(side=tk.BOTTOM, pady=0)
+dL2 = tk.Button(app, text="donate",fg="blue",cursor="hand2", command=donate2)
+dL2.pack(side=tk.BOTTOM, pady=0)
+dL3 = tk.Button(app, text="访问github",fg="red",cursor="hand2", command=donate3)
+dL3.pack(side=tk.BOTTOM, pady=10)
 app.mainloop()
