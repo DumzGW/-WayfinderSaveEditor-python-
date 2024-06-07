@@ -1,0 +1,90 @@
+{
+    "NissCharacter":{
+        "name":"尼斯",
+        "ability1":"NissAbility1Upgrades",
+        "ability2":"NIssAbility2Upgrades",
+        "ability3":"NissAbility3Upgrades",
+        "ability4":"NissAbilityUltUpgrades",
+        "aspect1":"Niss_AspectOfMorath",
+        "aspect2":"Niss_AspectOfArkyn",
+        "aspect3":"Niss_AspectOfUrda",
+        "img":"Niss.png"
+    },
+    "BattleMageCharacter":{
+        "name":"基罗斯",
+        "ability1":"KyrosAbility1Upgrades",
+        "ability2":"KyrosAbility2Upgrades",
+        "ability3":"KyrosAbility3Upgrades",
+        "ability4":"KyrosAbilityUltUpgrades",
+        "aspect1":"Battlemage_AspectOfMorath",
+        "aspect2":"Battlemage_AspectOfArkyn",
+        "aspect3":"Battlemage_AspectOfUrda",
+        "img":"Kyros.png"
+    },
+    "TacticianCharacter":{
+        "name":"西洛",
+        "ability1":"SiloAbility1Upgrades",        
+        "ability2":"SiloAbility2Upgrades",
+        "ability3":"SiloAbility3Upgrades",
+        "ability4":"SiloAbilityUltUpgrades",
+        "aspect1":"Tactician_AspectOfMorath",
+        "aspect2":"Tactician_AspectOfArkyn",
+        "aspect3":"Tactician_AspectOfUrda" ,
+        "img":"Silo.png"
+    },
+    "CrusaderCharacter":{
+        "name":"Wingrave",
+        "ability1":"WingraveAbility1Upgrades",
+        "ability2":"WingraveAbility2Upgrades",
+        "ability3":"WingraveAbility3Upgrades",
+        "ability4":"WingraveAbilityUltUpgrades",
+        "aspect1":"Crusader_AspectOfMorath",
+        "aspect2":"Crusader_AspectOfArkyn",
+        "aspect3":"Crusader_AspectOfUrda",
+        "img":"Wingrave.png"
+    },
+    "BerserkerCharacter":{
+        "name":"Grendel",
+        "ability1":"GrendelAbility1Upgrades",
+        "ability2":"GrendelAbility2Upgrades",
+        "ability3":"GrendelAbility3Upgrades",
+        "ability4":"GrendelAbilityUltUpgrades",
+        "aspect1":"Grendel_AspectOfMorath",
+        "aspect2":"Grendel_AspectOfArkyn",
+        "aspect3":"Grendel_AspectOfUrda",
+        "img":"Grendel.png"
+    },
+    "GladiatorCharacter":{
+        "name":"Senja",
+        "ability1":"SenjaAbility1Upgrades",
+        "ability2":"SenjaAbility2Upgrades",
+        "ability3":"SenjaAbility3Upgrades",
+        "ability4":"SenjaAbilityUltUpgrades",
+        "aspect1":"Gladiator_AspectOfMorath",
+        "aspect2":"Gladiator_AspectOfArkyn",
+        "aspect3":"Gladiator_AspectOfUrda",
+        "img":"Senja.png"
+    },
+    "VenomessCharacter":{
+        "name":"Venomess",
+        "ability1":"VenomessAbility1Upgrades",
+        "ability2":"VenomessAbility2Upgrades",
+        "ability3":"VenomessAbility3Upgrades",
+        "ability4":"VenomessAbilityUltUpgrades",
+        "aspect1":"Venomess_AspectOfMorath",
+        "aspect2":"Venomess_AspectOfArkyn",
+        "aspect3":"Venomess_AspectOfUrda",
+        "img":"Venomess.png"
+    
+    },
+    "Spec":{
+        "exp":"currentExp",
+        "awak":"currentAwakeningLevel"
+    }
+
+
+
+
+
+
+}
