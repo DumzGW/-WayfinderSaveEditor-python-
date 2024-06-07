@@ -1,4 +1,4 @@
-![08804dfa-2778-44c3-86ee-e69bdcc3c6e0](https://github.com/DumzGW/-WayfinderSaveEditor-python-/assets/169636076/ebc61815-f09f-4310-98d4-ae9e436cdc14)# -WayfinderSaveEditor-python-
+# -WayfinderSaveEditor-python-
 可以对Wayfinder的存档进行修改，在修改前请自行备份，防止由于部分数据缺少或超出限制导致的坏档  
 
 存档位置通常在"C:\Users\用户名称\AppData\Local\Wayfinder\Saved\SaveGames\xxxx（steam生成的id）\WayfinderSave_x.sav"    
