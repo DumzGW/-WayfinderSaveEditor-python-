@@ -8,7 +8,7 @@
 请自行更改名称并替换到存档处    
 ## 目前添加功能：  
 ### 角色修改（已完成）添加了天赋树的修改  
-### 背包物品修改（正在制作）  
+### 背包物品修改（已完成）  
 ### 武器修改（等待中）  
 ### 回响修改（等待中）  
 ### 饰品修改（等待中）  
@@ -28,7 +28,7 @@ Rename this file and replace the original save file.
 
 ## Current Features:  
 ### Character Modification (Completed)  
-### Inventory Item Modification (In Progress)  
+### Inventory Item Modification (Completed)  
 ### Weapon Modification (Pending)  
 ### Echo Modification (Pending)  
 ### Accessory Modification (Pending)  
