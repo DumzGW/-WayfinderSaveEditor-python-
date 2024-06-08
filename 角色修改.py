@@ -111,6 +111,11 @@ class Ui_Form(object):
         self.save = QtWidgets.QPushButton(Form)
         self.save.setGeometry(QtCore.QRect(490, 20, 75, 23))
         self.save.setObjectName("save")
+        self.tree_button = QtWidgets.QPushButton(Form)
+        self.tree_button.setGeometry(QtCore.QRect(490, 60, 75, 23))
+        self.tree_button.setObjectName("tree_button")
+        self.tree_button.setText("修改天赋")
+        self.tree_button.clicked.connect(lambda: self.open_talent_tree(i))
         self.retranslateUi(Form)
         self.load_data(i)
         self.save.clicked.connect(lambda: self.save_data(i))
@@ -124,7 +129,10 @@ class Ui_Form(object):
         self.qinhe.setText(_translate("Form", "亲和等级："))
         self.label.setText(_translate("Form", "技能等级："))
         self.save.setText(_translate("Form", "保存"))
-
+    def open_talent_tree(self, i):
+        from 天赋树 import TalentTreeWindow
+        self.tree_window = TalentTreeWindow(i)
+        self.tree_window.show()
     def load_data(self, i):
         self.bin_data = load_bin_file(self.path)
         self.translation_data = load_translation_file(self.translation_path)

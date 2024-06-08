@@ -1,6 +1,7 @@
 {
     "NissCharacter":{
         "name":"尼斯",
+        "Ename":"Niss",
         "ability1":"NissAbility1Upgrades",
         "ability2":"NIssAbility2Upgrades",
         "ability3":"NissAbility3Upgrades",
@@ -12,6 +13,7 @@
     },
     "BattleMageCharacter":{
         "name":"基罗斯",
+        "Ename":"Kyros",
         "ability1":"KyrosAbility1Upgrades",
         "ability2":"KyrosAbility2Upgrades",
         "ability3":"KyrosAbility3Upgrades",
@@ -23,6 +25,7 @@
     },
     "TacticianCharacter":{
         "name":"西洛",
+        "Ename":"Silo",
         "ability1":"SiloAbility1Upgrades",        
         "ability2":"SiloAbility2Upgrades",
         "ability3":"SiloAbility3Upgrades",
@@ -34,6 +37,7 @@
     },
     "CrusaderCharacter":{
         "name":"Wingrave",
+        "Ename":"Wingrave",
         "ability1":"WingraveAbility1Upgrades",
         "ability2":"WingraveAbility2Upgrades",
         "ability3":"WingraveAbility3Upgrades",
@@ -45,6 +49,7 @@
     },
     "BerserkerCharacter":{
         "name":"Grendel",
+        "Ename":"Grendel",
         "ability1":"GrendelAbility1Upgrades",
         "ability2":"GrendelAbility2Upgrades",
         "ability3":"GrendelAbility3Upgrades",
@@ -56,6 +61,7 @@
     },
     "GladiatorCharacter":{
         "name":"Senja",
+        "Ename":"Senja",
         "ability1":"SenjaAbility1Upgrades",
         "ability2":"SenjaAbility2Upgrades",
         "ability3":"SenjaAbility3Upgrades",
@@ -67,6 +73,7 @@
     },
     "VenomessCharacter":{
         "name":"Venomess",
+        "Ename":"Venomess",
         "ability1":"VenomessAbility1Upgrades",
         "ability2":"VenomessAbility2Upgrades",
         "ability3":"VenomessAbility3Upgrades",
