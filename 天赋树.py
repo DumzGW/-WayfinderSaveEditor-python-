@@ -1,4 +1,4 @@
-from PyQt5.QtWidgets import QMainWindow, QWidget, QVBoxLayout, QPushButton, QMessageBox
+from PyQt5.QtWidgets import QMainWindow, QWidget, QVBoxLayout, QPushButton, QMessageBox,QLabel
 from PyQt5.QtGui import QPainter, QPen, QColor
 from PyQt5.QtCore import Qt, QPointF, QRectF
 import json
@@ -11,10 +11,10 @@ class TalentTreeWindow(QMainWindow):
 
     def initUI(self):
         self.setWindowTitle('天赋树修改')
-        self.setGeometry(100, 100, 1500, 1500)
+        self.setGeometry(100, 100, 1000, 1000)
         self.graphWidget = GraphWidget(parent=self)
         self.setCentralWidget(self.graphWidget)
-        
+
         self.reset_button = QPushButton('重置', self)
         self.reset_button.clicked.connect(self.reset_talents)
         self.reset_button.setGeometry(10, 10, 100, 30)
@@ -56,7 +56,8 @@ class GraphWidget(QWidget):
     def __init__(self, parent=None):
         super().__init__(parent)
         self.layout = QVBoxLayout()
-        self.setLayout(self.layout)    
+        self.setLayout(self.layout) 
+        self.show_message = True   
         # 定义节点位置和连接线
         self.nodes = {
             1: QPointF(700, 600),
@@ -172,6 +173,12 @@ class GraphWidget(QWidget):
             109: QPointF(446.89110867544645, 863.3974596215563),
             # 根据实际情况添加更多节点
         }
+        
+        
+        
+        
+        
+        
         self.edges = [
             (1, 2), (2, 3),(3, 4), (4, 5),(5, 6), (6, 7),(7, 8), (8, 9),
             (9, 10), (8, 10),(10, 25), (25, 24),(24,23), (23, 22),(22, 21), (21, 20),
@@ -209,7 +216,9 @@ class GraphWidget(QWidget):
         for edge in self.edges:
             start_node = self.nodes[edge[0]]
             end_node = self.nodes[edge[1]]
-            painter.drawLine(start_node, end_node)
+            s1=QPointF(start_node.x()*0.66, start_node.y()*0.66)
+            s2=QPointF(end_node.x()*0.66, end_node.y()*0.66)
+            painter.drawLine(s1, s2)
 
         unlocked_nodes=self.find_talents(self.parent().character_index)
         # 画所有节点
@@ -218,11 +227,11 @@ class GraphWidget(QWidget):
 
         
         for node, position in self.nodes.items():
-            if self.getw_node(node) in unlocked_nodes:
+            if any(self.node_key(self.getw_node(node))== self.node_key(unlocked_node) for unlocked_node in unlocked_nodes):
                 painter.setBrush(QColor(0, 255, 0))  # 已解锁节点用绿色填充
             else:
                 painter.setBrush(QColor(255, 255, 255))  # 未解锁节点用白色填充
-            painter.drawEllipse(position, 10, 10)  # 画节点
+            painter.drawEllipse(position*0.66, 10, 10)  # 画节点
     def getindex(self,node):
         if node ==109:
             index=31
@@ -243,27 +252,41 @@ class GraphWidget(QWidget):
             else:
                 index=node-71
         return index
+    def node_key(self,node):
+        return (node["nodeId"],node["treeIndex"])
     def getw_node(self,node):
         w_node={
             "nodeId": str(node),
-            "bIsNetworked": "false",
-            "bIsNetworkUnlocked": "false",
+            "bIsNetworked": "False",
+            "bIsNetworkUnlocked": "False",
             "treeType": "Support",
             "treeIndex": str(self.getindex(node))       
         }
         return w_node
     def mousePressEvent(self, event):
         for node, position in self.nodes.items():
-            if QRectF(position.x() - 10, position.y() - 10, 20, 20).contains(event.pos()):
+            if QRectF(position.x()*0.66 - 10, position.y()*0.66 - 10, 20, 20).contains(event.pos()):
                 self.node_clicked(node)
                 break
 
     def node_clicked(self, node):
+        if node in range(1,37):
+            treeType="Offensive"
+        elif node in range(37,73):
+            treeType="Support"
+        elif node in range(73,109):
+            treeType="Defensive"
+        elif node == 110:
+            treeType="Offensive"
+        elif node == 111:
+            treeType="Defensive"
+        elif node == 109:
+            treeType="Support"
         new_node={
             "nodeId": str(node),
-            "bIsNetworked": "false",
-            "bIsNetworkUnlocked": "false",
-            "treeType": "Support",
+            "bIsNetworked": "False",
+            "bIsNetworkUnlocked": "False",
+            "treeType": treeType,
             "treeIndex": str(self.getindex(node))       
         }
         from 角色修改 import load_bin_file, load_config,path0
@@ -273,8 +296,20 @@ class GraphWidget(QWidget):
             if data['characterName'] == self.parent().character_name:
                 data['unlockedNodes'].append(new_node)
                 self.save_data()
-                QMessageBox.information(self, '提示', '天赋已添加！')
+                from PyQt5.QtWidgets import QCheckBox
+                if self.show_message:
+                    msg = QMessageBox()
+                    msg.setWindowTitle('提示')
+                    msg.setText('天赋已保存，请勿点击上一个界面中的保存\n以免修改丢失')
+                    checkbox = QCheckBox("不再提醒")
+                    checkbox.stateChanged.connect(lambda state: self.update_show_message_state(state))
+                    msg.setCheckBox(checkbox)
+                    msg.exec_()
+                self.update()
                 return
+    def update_show_message_state(self, state):
+        if state == Qt.Checked:
+            self.show_message = False
     def save_data(self):
         from 角色修改 import load_config,path0
         with open(path0(load_config()['output_path_1']), 'w', encoding='utf-8') as bin_file:
